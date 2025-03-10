@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { data } from 'react-router-dom'
+import Todo from './Todo'
 
 export default function TodoList() {
-    const [todos, setTodods] = useState([])
+    const [todos, setTodos] = useState([])
     useEffect(()=>{
         fetch("https://jsonplaceholder.typicode.com/todos",{
             method:"GET",
@@ -11,11 +11,26 @@ export default function TodoList() {
             }
         }).then((response)=>{
             response.json().then((data)=>{
-                setTodods(data)
+                setTodos(data)
             })
         })
     },[])
-  return (
-    <div>TodoList</div>
+return (
+    <>
+
+    <div className="py-5 flex flex-col items-center">
+        <div className="flex justify-between items-center w-full max-w-2xl">
+            <h1 className="text-2xl">All Todos</h1>
+            <button className="bg-pink-300 cursor-pointer rounded-lg p-4 m-4 text-center" onClick={() => window.location.href = "/TodoApplication/create"}>
+                Create New
+            </button>
+        </div>
+        <div className="todo-list bg-blue-50 text-black p-4 shadow-lg rounded-lg m-4 max-w-2xl">
+            {todos.map((todo) => (
+                <Todo key={todo.id} id={todo.id} title={todo.title} completed={todo.completed} />
+            ))}
+        </div>
+    </div>
+</>
   )
 }
